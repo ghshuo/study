@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>增强对象字面量</title>
+</head>
+<body>
+    <script>
+
+        /**
+         * 1、可以再对象面里面定义原型
+         * 2、定义方法可以不同function关键字
+         * 3、直接调用父类方法
+         */
+
+        //通过对象字面量创建对象
+        var has = {
+            breathe(){
+                console.log('breathe.......');
+            }
+        };
+        var woerket = {
+            __proto__: has, //设置此对象的原型为human,相当于继承human
+            company: 'freelancer',
+            work() {
+                console.log('working...');
+            }
+        }
+        has.breathe();//输出 ‘breathing...’
+        //调用继承来的breathe方法
+        woerket.breathe();//输出 ‘breathing...
+    </script>
+</body>
+</html>

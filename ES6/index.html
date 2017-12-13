@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ES6学习之路</title>
+  <link rel="stylesheet" type="text/css" href="css/index.css">
+  <script src="js/jquery.min.js"></script>
+</head>
+<body>
+
+  <br>
+  <hr>
+  <h2></h2>
+  <code class="lang"></code>
+  <script></script>
+
+  <h2>let和const</h2>
+  <code class="lang">
+    <h3>相同点：</h3>
+    1.在let命令所在的代码块内有效。
+    2.不允许在相同作用域内，重复声明同一个变量
+     function () { let a = 10; let a = 1; } 错误
+     function func(a) { { let a; // 不报错 } }
+     3.只在声明所在的块级作用域内有效。
+    <h3>不同点：</h3>
+    1.const命令用来生成一个常量，常量被声明后，值无法改变。
+  </code>
+  <br>
+  <hr>
+  <h2>变量的解构赋值</h2>
+  <code class="lang">
+      <h4>定义：</h4>ES6 允许按照一定模式，从数组和对象中提取值，对变量进行赋值，这被称为解构.
+
+       <h4>1.数组解构</h4> let [a, b, c,d] = ["aa", "bb", 77,88]; 
+       嵌套数组解构 let [a,b,[c,d],e] =["aa",'bb',[33,44],55];
+       空缺变量 let [a,b,,e] =["aa",'bb',[33,44],55];
+       多余变量 let [a,b,,e,f] =["aa",'bb',[33,44],55]; 
+       默认值 let [a,b,,e,f='hello'] =["aa",'bb',[33,44],55];
+      <h4>1.对象解构赋值</h4>
+      
+  </code>
+  <br>
+  <hr>
+  <h2>Symbol</h2>
+  <code class="lang">
+    ES6 引入了一种新的原始数据类型Symbol，表示独一无二的值。它是 JavaScript 语言的第七种数据类型，前六种是：undefined、null、布尔值（Boolean）、字符串（String）、数值（Number）、对象（Object）。
+    Symbol 值通过Symbol函数生成。这就是说，对象的属性名现在可以有两种类型，一种是原来就有的字符串，另一种就是新增的 Symbol 类型。凡是属性名属于 Symbol 类型，就都是独一无二的，可以保证不会与其他属性名产生冲突。
+    let s1 = Symbol(33); 
+    let s2 = Symbol(33);
+    alert(s1.toString());   // Symbol(33)
+    alert(s1 == s2);        // false
+    <button onclick="symbol()">点击查看效果</button>
+  </code>
+  <script>
+    function symbol () {
+      let s1 = Symbol(33);
+      let s2 = Symbol(33);
+      alert(s1.toString());
+      alert(s1 == s2);  
+    }
+  </script>
+
+  <br>
+  <hr>
+  <h2>set</h2>
+  <code class="lang">
+    1. 它类似于数组，但是成员的值都是唯一的，没有重复的值。
+
+    Set 实例的方法分为两大类：操作方法（用于操作数据）和遍历方法（用于遍历成员）。下面先介绍四个操作方法。
+      add(value)：添加某个值，返回 Set 结构本身。
+      delete(value)：删除某个值，返回一个布尔值，表示删除是否成功。
+      has(value)：返回一个布尔值，表示该值是否为Set的成员。
+      clear()：清除所有成员，没有返回值。
+     document.getElementById('set').addEventListener('click', function () {
+      var set = new Set();
+      [1, 2, 3, 4, 2, 8, 4].map(function (value) {
+        console.log('没有set去重之前的值遍历=========' + value);
+        set.add(value);  // 添加
+        // set.delete(2);  //删除
+        // set.clear();  //清空
+      })
+      for (let value of set) {
+        console.log(value)  // 遍历
+      }
+    }, false); 
+
+
+  </code>
+  <button id="set" style="float:left;">set添加</button>
+  <code class="lang">
+     document.getElementById('set2').addEventListener('click', function () {
+          var set = new Set();
+          [1, 2, 3, 4, 2, 8, 4].map(function (value) {
+            console.log('没有set去重之前的值遍历=========' + value);
+            set.add(value);  // 添加
+          })
+          console.log('set='+set);
+          var arr = [...set];  // 扩展运算符（...）内部使用for...of循环
+          console.log('arr=' + arr);
+        }, false);
+  </code>
+  <button id="set2">扩展运算符</button>
+  <script>
+    document.getElementById('set').addEventListener('click', function () {
+      var set = new Set();
+      [1, 2, 3, 4, 2, 8, 4].map(function (value) {
+        console.log('没有set去重之前的值遍历=========' + value);
+        set.add(value);  // 添加
+        // set.delete(2);  //删除
+        // set.clear();  //清空
+      })
+      for (let value of set) {
+        console.log(value)  // 遍历
+      }
+    }, false); 
+      document.getElementById('set2').addEventListener('click', function () {
+          var set = new Set();
+          [1, 2, 3, 4, 2, 8, 4].map(function (value) {
+            console.log('没有set去重之前的值遍历=========' + value);
+            set.add(value);  // 添加
+          })
+          console.log('set='+set);
+          var arr = [...set];  // 扩展运算符（...）内部使用for...of循环
+          console.log('arr=' + arr);
+        }, false);
+  </script>
+  <script>
+     window.onload = function () {
+       
+     }
+  </script>
+</body>
+</html>

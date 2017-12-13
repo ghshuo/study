@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue学习</title>
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/velocity.min.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="js/vue-resource.min.js"></script>
+    <script src="js/vue-router.js"></script>
+    <style>
+        *{margin: 0;padding: 0}
+        #box{width: 96%;margin-left:2%; }
+        h2{text-align: center;}
+        xmp{
+            counter-reset: line-numbering;
+            border: solid 1px #d9d9d9;
+            border-radius: 0;
+            background: #fff;
+            padding: 0;
+            white-space: pre;
+            overflow-x: auto;
+            word-break: inherit;
+            word-wrap: inherit;
+        }
+        .lang{
+            padding: 0;
+            font-size: inherit;
+            color: inherit;
+            white-space: pre-wrap;
+            background-color: transparent;
+            border-radius: 0;
+            display: inline-block;
+        }
+        .current{
+			background-color:#ccc;
+		}
+        li{list-style: none;}
+        .lifecyImg{
+            width: 100px;
+            height: 100px;
+        }
+        .lifecyImg:hover{
+            position: relative;
+            width: 600px;
+            height: 1000px;
+        }
+        hr{width: 100%;}
+        /* 自定义指令拖拽*/
+        #itanyss div{
+			width: 100px;
+			height: 100px;
+			position:absolute;
+		}
+		#itanyss .hello{
+			background-color:red;
+			top:0;
+			left:0;
+		}
+		#itanyss .world{
+			background-color:blue;
+			top:0;
+			right:0;
+		}
+
+
+        /*过度动画*/
+        #itanyw	p{
+			width: 300px;
+			height: 300px;
+			background-color:red;
+		}
+		.fade-enter-active,.fade-leave-active{
+			transition:all 3s ease;
+		}
+		.fade-enter-active{
+			opacity:1;
+			width:300px;
+			height:300px;
+		}
+		.fade-leave-active{
+			opacity:0;
+			width:50px;
+			height:50px;
+		}
+		/* .fade-enter需要放在.fade-enter-active的后面 */
+		.fade-enter{
+			opacity:0;
+			width: 100px;
+			height: 100px;
+		}
+
+        
+        .tranImg{
+            width: 572px;
+            height: 248px;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+        <h2>生命周期</h2>
+        <div id="itany">
+            {{msg}} 
+            <br>
+            <button @click="update">更新数据</button>
+            <button @click="destroy">销毁组件</button>
+            八个阶段：
+            <button title="组件实例刚刚创建，还未进行数据观测和事件配置">beforeCreate</button>
+            <button title="实例已经创建完成，并且已经进行数据观测和事件配置">created  常用</button>
+            <button title="模板编译之前，还没挂载">beforeMount</button>
+            <button title="模板编译之后，已经挂载，此时才会渲染页面，才能看到页面上数据的展示">mounted  常用</button>
+            <button title="组件更新之前">beforeUpdate</button>
+            <button title="组件更新之后">updated</button>
+            <button title="组件销毁之前">beforeDestroy</button>
+            <button title="组件销毁之后">destroyed</button>
+        </div>
+        <img class="lifecyImg" src="images/lifecycle.png" alt="生命周期">
+        <!--<img src="images/sheng.png">-->
+        <script>
+            
+            var  vm=new Vue({
+				el:'#itany',
+				data:{
+					msg:'welcome to itany'
+				},
+				methods:{
+					update(){
+						this.msg='欢迎来到大本营！';
+					},
+					destroy(){
+						// this.$destroy();
+						vm.$destroy();
+					}
+				},
+				beforeCreate(){
+					console.log('beforeCreate组件实例刚刚创建，还未进行数据观测和事件配置');
+				},
+				created(){  //常用！！！
+					console.log('created实例已经创建完成，并且已经进行数据观测和事件配置');
+				},
+				beforeMount(){
+					console.log('beforeMount模板编译之前，还没挂载');
+				},
+				mounted(){ //常用！！！
+					console.log('mounted模板编译之后，已经挂载，此时才会渲染页面，才能看到页面上数据的展示');
+				},
+				beforeUpdate(){
+					alert('beforeUpdate组件更新之前');
+				},
+				updated(){
+					alert('updated组件更新之后');
+				},
+				beforeDestroy(){
+					alert('beforeDestroy组件销毁之前');
+				},
+				destroyed(){
+					alert('destroyed组件销毁之后');
+				}
+			});
+        </script>
+        <br>
+        <hr>
+        <h2>ajax</h2>
+        <h4>1.简介</h4>
+        <p>vue本身不支持发送AJAX请求，需要使用vue-resource、axios等插件实现axios是一个基于Promise的HTTP请求客户端，用来发送请求，也是vue2.0官方推荐的，同时不再对vue-resource进行更新和维护</p>
+        <p>
+            <button><a href="https://github.com/mzabriskie/axios"  target=_blank>GitHub上axios查看API</a></button>
+            <button><a href="https://www.kancloud.cn/yunye/axios/234845"  target=_blank>Axios 中文说明</a></button>
+            <button><a href="https://github.com/pagekit/vue-resource/blob/develop/docs/http.md"  target=_blank>ajax跨域请求api</a></button>
+        </p>
+         <code class="lang">
+            axios([options])       
+            axios.get(url[,options]);
+        传参方式：
+            1.通过url传参
+            2.通过params选项传参
+         axios.post(url,data,[options]);
+        axios默认发送数据时，数据格式是Request Payload，并非我们常用的Form Data格式，
+        所以参数必须要以键值对形式传递，不能以json形式传参
+        传参方式：
+            1.自己拼接为键值对
+            2.使用transformRequest: [function (data) {
+                                        在请求发送前将请求数据进行转换
+                                            return data;
+                                     }],
+            3.如果使用模块化开发，可以使用qs模块进行转换
+    
+    axios本身并不支持发送跨域的请求，没有提供相应的API，作者也暂没计划在axios添加支持发送跨域请求，所以只能使用第三方库
+        </code>
+        <code class="lang">
+        </code>
+        <div id="app">
+            <button @click="send">发送</button>
+            <button @click="sendGet">发送ajax</button>
+            <button @click="sendPost">发送post ajax</button>
+           GitHub ID： <input type="text" v-model="uid">
+           姓名：{{user.name}} 
+
+		    头像：<img :src="user.avatar_url" alt="" style="width：50px;height:50px">
+            <button @click="getUserById(uid)">获取指定github账号信息</button>
+            <button @click="sendJSONP">向360搜索发送JSONP请求</button>
+		    <button @click="sendJSONP2">向百度搜索发送JSONP请求</button>
+        </div>
+        百度搜索： <div id="app1">
+           <input type="text" v-model="keyword" @keyup="getData($event)" @keydown.down="changeDown" @keydown.up.prevent="changeUp">
+            <ul>
+                <li v-for="(value,index) in myData" :class="{current:index==now}">
+                    {{value}}
+                </li>
+            </ul>
+            <p v-show="myData.length==0">暂无数据....</p>
+        </div>
+    </div>
+    
+<script>
+    /**
+    *ajax
+    **/
+    var app =new Vue({
+        el:'#app',
+        data:{
+            user:{
+                // name:'alice',
+                // age:19
+            },
+            uid:''
+        },
+        methods:{
+            send(){
+                axios({
+                    methods:'get',
+                    url:'js/user.json'
+                }).then(function(resp){
+                    console.log(resp.data);
+                    console.log(resp);
+                }).catch(function(resp){
+                    console.log('请求失败：'+resp.status+','+resp.statusText);
+                })
+            },
+            sendGet(){
+                axios.get('js/server.php?name=tmo&age=22')
+                .then(function(resp){
+                    console.log(resp.data);
+                })
+                .catch(function(resp){
+                    console.log('请求失败：'+resp.status+','+resp.statusText);
+                })
+            },
+            sendPost(){
+                // axios.post('js/servers.php','name:alice&age=20') //方式1
+                axios.post('js/servers.php',this.user,{
+                    transformRequest:[   // 对 data 进行任意转换处理
+                       function(data){
+                            let params='';
+                            for(let index in data){
+                                params+=index+'='+data[index]+'&';
+                            }
+                            return params;
+                        }
+                    ]
+                })
+                .then(function(resp){
+                    console.log(resp.data);
+                })
+                .catch(function(resp){
+                    console.log('请求失败：'+resp.status+','+resp.statusText);
+                })
+            },
+            getUserById(uid){
+                axios.get(`https://api.github.com/users/${uid}`)
+                .then(resp => {
+                    // console.log(resp.data);
+                    this.user=resp.data;
+                });
+            },
+            sendJSONP(){
+                //https://sug.so.360.cn/suggest?callback=suggest_so&encodein=utf-8&encodeout=utf-8&format=json&fields=word&word=a
+                this.$http.jsonp('https://sug.so.360.cn/suggest',{
+                    params:{
+                        word:'a'
+                    }
+                }).then(resp => {
+                    console.log(resp.data.s);
+                });
+            },
+            sendJSONP2(){
+                //https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=a&json=1&p=3&sid=1420_21118_17001_21931_23632_22072&req=2&csor=1&cb=jQuery110208075694879886905_1498805938134&_=1498805938138
+                this.$http.jsonp('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',{
+                    params:{
+                        wd:'a'
+                    },
+                    jsonp:'cb' //百度使用的jsonp参数名为cb，所以需要修改
+                }).then(resp => {
+                    console.log(resp.data.s);
+                });
+            }
+        }
+    })
+    var app1 =new Vue({
+        el:'#app1',
+        data:{
+            keyword:'',
+            myData:[],
+            now:-1 //当前选中项的索引
+        },
+        methods:{
+            getData(e){
+                //如果按方向键上、下，则不发请求
+                if(e.keyCode==38||e.keyCode==40) 
+                    return;
+
+                this.$http.jsonp('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',{
+                    params:{
+                        wd:this.keyword
+                    },
+                    jsonp:'cb'
+                }).then(resp => {
+                    this.myData=resp.data.s;
+                });
+            },
+            changeDown(){
+                this.now++;
+                this.keyword=this.myData[this.now];
+                if(this.now==this.myData.length){
+                    this.now=-1;
+                }
+            },
+            changeUp(){
+                this.now--;
+                this.keyword=this.myData[this.now];
+                if(this.now==-2){
+                    this.now=this.myData.length-1;
+                }
+            }
+        }
+
+    })
+</script>
+    <br>
+    <br>
+    <hr>
+    <div style="width:100%">
+        <h2>vue实例的属性和方法</h2>
+        <code class="lang">
+            1.属性
+            vm.$el      获取vue实例相关的元素。     vm.$el.style.color='red';
+            vm.$data       获取数据对象data         vm.$data.msg
+            vm.$options       获取自定义属性           vm.$options.name      vm.$options.show()  自定义方法
+            vm.$refs       获取所添加refs属性
+            
+        ### 2. 方法
+            vm.$mount()     如果 Vue 实例在实例化时没有收到 el 选项，则它处于“未挂载”状态，没有关联的 DOM 元素。可以使用 vm.$mount() 手动地挂载一个未挂载的实例
+            vm.$destroy()      完全销毁一个实例。清理它与其它实例的连接，解绑它的全部指令及事件监听器。触发 beforeDestroy 和 destroyed 的钩子。
+            vm.$nextTick(callback)  在DOM更新完成后再执行回调函数，一般在修改数据之后使用该方法，以便获取更新后的DOM
+
+            vm.$set(object,key,value)   返回值： 设置的值
+            vm.$delete(object,key)          删除属性
+            vm.$watch(data,callback[,options])   监视数据的用法
+        </code>
+        <div id="app3">
+            {{msg}}
+            <h4 ref="hello">你好</h4>
+        </div>
+        <div id="app4">
+            {{msg}}
+		    <h4 ref="title">标题：{{name}}</h4>
+        </div>
+        <div id="app5">
+            <button @click="doUpdata" style="float:left;"> 修改属性</button> 
+            <h4 style="float:left;">名字：{{user.name}}</h4>
+            <button @click="doAdd" style="float:left;"> 添加属性</button> 
+            <h4 style="float:left;">    年龄：{{user.age}}</h4>
+            <button @click="doDelete" style="float:left;"> 删除属性</button> 
+        </div>
+    </div>
+    <script>
+       /**
+       * 属性
+       **/
+        var vm = new Vue({
+            el:"#app3",
+            data:{
+                msg:'hello word!'
+            },
+            name:'tom',
+            age:'11',
+            show:function(){
+                console.log('show');
+            }
+        })
+       
+        // console.log(vm.$el);
+        // vm.$el.style.color='red';
+        // console.log(vm.$data.msg);
+        // console.log(vm.$options.name);
+        // console.log(vm.$refs.hello);
+
+         /**
+       * 方法
+       **/
+        var vm=new Vue({
+			data:{
+				msg:'欢迎来到vue',
+				name:'tom'
+			}
+		}).$mount('#app4');
+
+		//vm.$destroy() 销毁实例
+		// vm.$destroy();
+
+		// vm.$nextTick(callback) 在DOM更新完成后再执行回调函数，一般在修改数据之后使用该方法，以便获取更新后的DOM
+		//修改数据
+		vm.name='汤姆';
+		//DOM还没更新完，Vue实现响应式并不是数据发生改变之后DOM立即变化，需要按一定的策略进行DOM更新，需要时间！！
+		// console.log(vm.$refs.title.textContent);
+		vm.$nextTick(function(){
+			//DOM更新完成，更新完成后再执行此代码
+			console.log('vm.$nextTick'+vm.$refs.title.textContent);
+		});
+
+        var vms =new Vue({
+            el:'#app5',
+            data:{
+                user:{
+                    id:1001,
+                    name:'tom'
+                }
+            },
+            methods:{
+                doUpdata(){
+                    this.user.name='汤姆'
+                },
+                doAdd(){
+                    // this.user.age=25; //通过普通方式为对象添加属性时vue无法实时监视到
+					// this.$set(this.user,'age',18); //通过vue实例的$set方法为对象添加属性，可以实时监视
+                     if(this.user.age){
+						this.user.age++;
+					}else{
+						Vue.set(this.user,'age',1);
+					}
+                },
+                doDelete(){
+                    if(this.user.age){
+                        Vue.delete(this.user,'age');
+                    }
+                }
+                
+            }
+        })
+
+    </script>
+    <br>
+    <br>
+    <hr>
+    <div style="width:96%;margin-left:2%">
+        <h2>自定义指令</h2>
+        <div id="my-directive">
+            <h4>1.自定义全局指令    注：使用指令时必须在指名名称前加前戳v-，即指令名称</h4>
+            <p>vue.directive( 指令id,[function] 指令对象)</p>
+            <code class="lang">
+                 Vue.directive('directive', {
+                    bind() { //常用
+                        console.log('指令第一次绑定到元素上时调用，只调用一次，可执行初始化操作');
+                    },
+                    inserted() {
+                        console.log('被绑定元素中插入到DOM中时调用');                
+                    },
+                    update() {
+                        console.log('被绑定元素所在模板更新时调用');
+                    },
+                    componentUpdated() {
+                        alert('被绑定元素所在模板完成一次更新周期时调用');
+                    },
+                    unbind() {
+                        alert('指令与元素解绑时调用，只调用一次');
+                    }
+                    bind: 只调用一次，指令第一次绑定到元素时调用，用这个钩子函数可以定义一个在绑定时执行一次的初始化动作。
+                    inserted: 被绑定元素插入父节点时调用（父节点存在即可调用，不必存在于 document 中）。
+                    update: 所在组件的 VNode 更新时调用，但是可能发生在其孩子的 VNode 更新之前。指令的值可能发生了改变也可能没有。但是你可以通过比较更新前后的值来忽略不必要的模板更新 (详细的钩子函数参数见下)。
+                     componentUpdated: 所在组件的 VNode 及其孩子的 VNode 全部更新时调用。
+                    unbind: 只调用一次， 指令与元素解绑时调用。
+                    <br>
+                    钩子函数被赋予了以下参数：
+                        el: 指令所绑定的元素，可以用来直接操作 DOM 。
+                        binding: 一个对象，包含以下属性：
+                        name: 指令名，不包括 v- 前缀。
+                        value: 指令的绑定值， 例如： v-my-directive="1 + 1", value 的值是 2。
+                        oldValue: 指令绑定的前一个值，仅在 update 和 componentUpdated 钩子中可用。无论值是否改变都可用。
+                        expression: 绑定值的字符串形式。 例如 v-my-directive="1 + 1" ， expression 的值是 "1 + 1"。
+                        arg: 传给指令的参数。例如 v-my-directive:foo， arg 的值是 "foo"。
+                        modifiers: 一个包含修饰符的对象。 例如： v-my-directive.foo.bar, 修饰符对象 modifiers 的值是 { foo: true, bar: true }。
+                        vnode: Vue 编译生成的虚拟节点，查阅 VNode API 了解更多详情。
+                        oldVnode: 上一个虚拟节点，仅在 update 和 componentUpdated 钩子中可用。
+
+            </code>
+            <div id="hook-arguments-example" v-demo:foo.a.b="message"></div>  
+    </div>          
+    <script>
+        // 自定义指令
+        Vue.directive('ratings', {
+            bind: function (el, binding, vnode) {
+                var s = JSON.stringify
+                el.innerHTML =
+                'name: '       + s(binding.name) + '<br>' +
+                'value: '      + s(binding.value) + '<br>' +
+                'expression: ' + s(binding.expression) + '<br>' +
+                'argument: '   + s(binding.arg) + '<br>' +
+                'modifiers: '  + s(binding.modifiers) + '<br>' +
+                'vnode keys: ' + Object.keys(vnode).join(', ')
+            }
+            })
+            new Vue({
+            el: '#hook-arguments-example',
+            data: {
+                message: 'hello!'
+            }
+        })
+    </script>
+       <!--自定义指令拖拽-->
+    <div id="itanyss">
+		<div class="hello" v-drag>学习</div>
+		<div class="world" v-drag>练习</div>
+	</div>
+
+	<script>
+		Vue.directive('drag',function(el){
+			el.onmousedown=function(e){
+				//获取鼠标点击处分别与div左边和上边的距离：鼠标位置-div位置
+				var disX=e.clientX-el.offsetLeft;
+				var disY=e.clientY-el.offsetTop;
+				// console.log(disX,disY);
+
+				//包含在onmousedown里面，表示点击后才移动，为防止鼠标移出div，使用document.onmousemove
+				document.onmousemove=function(e){
+					//获取移动后div的位置：鼠标位置-disX/disY
+					var l=e.clientX-disX;
+					var t=e.clientY-disY;
+					el.style.left=l+'px';
+					el.style.top=t+'px';
+				}
+
+				//停止移动
+				document.onmouseup=function(e){
+					document.onmousemove=null;
+					document.onmouseup=null;
+				}
+
+			}
+		});
+
+		var vm=new Vue({
+			el:'#itanyss',
+			data:{
+				msg:'welcome to itany',
+				username:'alice'
+			},
+			methods:{
+				change(){
+					this.msg='欢迎来到南京网博'
+				}
+			}
+		});
+	</script>
+    <br>
+    <hr>
+    <div style="width:96%;margin-left:2%">
+        <h2>过度动画</h2>
+        <code class="lang">
+会有 6 个(CSS)类名在 enter/leave 的过渡中切换
+v-enter: 定义进入过渡的开始状态。在元素被插入时生效，在下一个帧移除。
+v-enter-active: 定义过渡的状态。在元素整个过渡过程中作用，在元素被插入时生效，在 transition/animation 完成之后移除。 这个类可以被用来定义过渡的过程时间，延迟和曲线函数。
+v-enter-to: 定义进入过渡的结束状态。在元素被插入一帧后生效（于此同时 v-enter 被删除），在 transition/animation 完成之后移除。
+v-leave: 定义离开过渡的开始状态。在离开过渡被触发时生效，在下一个帧移除。
+v-leave-active: 定义过渡的状态。在元素整个过渡过程中作用，在离开过渡被触发后立即生效，在 transition/animation 完成之后移除。 这个类可以被用来定义过渡的过程时间，延迟和曲线函数。
+v-leave-to: 定义离开过渡的结束状态。在离开过渡被触发一帧后生效（于此同时 v-leave 被删除），在 transition/animation 完成之后移除。
+        </code>
+         <img class="tranImg" src="images/transition.png" alt="过度动画">
+        <div id="itanyw">
+            <button @click="flag=!flag">点我/有动画效果</button>
+            <transition name="fade" 
+                @before-enter="beforeEnter"
+                @enter="enter"
+                @after-enter="afterEnter"
+                @before-leave="beforeLeave"
+                @leave="leave"
+                @after-leave="afterLeave"
+            >
+                <p v-show="flag">我是一个爱学习的人</p>
+            </transition>
+        </div>
+    </div>
+    <script>
+        var vm=new Vue({
+			el:'#itanyw',
+			data:{
+				flag:false
+			},
+			methods:{
+				beforeEnter(el){
+					// alert('动画进入之前');
+				},
+				enter(){
+					// alert('动画进入');
+				},
+				afterEnter(el){
+					// alert('动画进入之后');
+					el.style.background='blue';
+				},
+				beforeLeave(){
+					// alert('动画即将之前');
+				},
+				leave(){
+					// alert('动画离开');
+				},
+				afterLeave(el){
+					// alert('动画离开之后');
+					el.style.background='red';
+				}
+			}
+		});
+    </script>
+    <!--animated  样式动画-->
+    <div id="example-3">
+        <button @click="show = !show">
+            Toggle render
+        </button>
+        <transition
+            name="custom-classes-transition"
+            enter-active-class="animated tada"
+            leave-active-class="animated bounceOutRight"
+        >
+            <p v-if="show">hello我是animate插件动画</p>
+        </transition>
+    </div>
+    <script>
+        new Vue({
+            el: '#example-3',
+            data: {
+                show: true
+            }
+        })
+    </script>   
+    <h4>2.多元素动画</h4>
+    <code class="lang">
+        transition-group标签
+    </code>
+    <p>使用velocity.min.js 插件 实现动画列表</p>
+    <div id="staggered-list-demo">
+        <input v-model="query">
+        <transition-group
+            name="staggered-fade"
+            tag="ul"
+            v-bind:css="false"
+            v-on:before-enter="beforeEnter"
+            v-on:enter="enter"
+            v-on:leave="leave"
+        >
+            <li
+            v-for="(item, index) in computedList"
+            v-bind:key="item.msg"
+            v-bind:data-index="index"
+            >{{ item.msg }}</li>
+        </transition-group>
+    </div>    
+    <script>
+        new Vue({
+            el: '#staggered-list-demo',
+            data: {
+                query: '',
+                list: [
+                { msg: 'Aein' },
+                { msg: 'Jacki' },
+                { msg: 'Chuck' },
+                { msg: 'Jet' },
+                { msg: 'Fet' },
+                { msg: 'Kung' }
+                ]
+            },
+            computed: {
+                computedList: function () {
+                    var vm = this
+                    return this.list.filter(function (item) {
+                        return item.msg.toLowerCase().indexOf(vm.query.toLowerCase()) !== -1
+                    })
+                }
+            },
+            methods: {
+                beforeEnter: function (el) {
+                    el.style.opacity = 0
+                    el.style.height = 0
+                },
+                enter: function (el, done) {
+                    // console.log(el,done);
+                    var delay = el.dataset.index * 150
+                    setTimeout(function () {
+                        $.Velocity(
+                            el,
+                            { opacity: 1, height: '1.6em' },
+                            { complete: done }
+                        )
+                    }, delay)
+                },
+                leave: function (el, done) {
+                    var delay = el.dataset.index * 150
+                    setTimeout(function () {
+                        $.Velocity(
+                            el,
+                            { opacity: 0, height: 0 },
+                            { complete: done }
+                        )
+                    }, delay)
+                }
+            }
+        })
+        
+    </script>
+    <br>
+    <hr>
+    <div style="width:96%;margin-left:2%">
+        <h2>组件</h2>
+        <code class="lang">
+            1.自定义  创建组件
+            Vue.component('my-component', {
+                // 选项
+            })
+     
+          2* 全局组件，可以在所有vue实例中使用
+          Vue.component('my-hello',{
+                template:'<---h4>{{name}}<--/h4>',
+                data:function(){
+                    return {
+                        name:'小耿'
+                    }
+                }
+          })
+  
+          3* 局部组件，只能在当前vue实例中使用
+            var appz1=new Vue({
+                el:'#appz1',
+                data:{
+                    name:'tom'
+                },
+                components: {
+                    'my-world':{
+                        template:'<--h4>我是一个局部组件<--/h4>'
+                    }
+                }
+            })
+        </code>
+        <div id="appz">
+           <hello></hello> 
+           <my-word></my-word>
+        </div>
+        <div id="appz1">
+            <my-hello></my-hello>
+            <my-world></my-world>
+        </div>
+        <script>
+            /**
+             * 方式1，创建构造器，然后由组件构造器创建组件
+             * */
+            // 创建一个组件构造器
+            var myCompoent = Vue.extend({
+                template:'<h4>hello word</h4>'
+            });
+            //Vue.compornt(标签名,组件构造器)，根据组件构造器来创建组件
+            Vue.component('hello',myCompoent);
+
+
+            /**
+            * 方式2，直接创建组件
+            */
+            Vue.component('my-word',{
+                template:'<h4>您好，世界</h4>'
+            });
+
+            new Vue({
+                el:'#appz'
+            })
+            
+            /**
+             * 全局组件，可以在所有vue实例中使用
+             */
+             Vue.component('my-hello',{
+                    template:'<h4>我是一个全局组件{{name}}</h4>',
+                    data:function(){
+                        return {
+                            name:'小耿'
+                        }
+                    }
+            })
+            /**
+             * 局部组件，只能在当前vue实例中使用
+             */
+            var appz1=new Vue({
+                el:'#appz1',
+                data:{
+                    name:'tom'
+                },
+                components: {
+                    'my-world':{
+                        template:'<h4>我是一个局部组件</h4>'
+                    }
+                }
+            })
+            
+        </script>
+        <h3 style="color:red;">2.引用模板</h3>
+        <xmp>
+            奖组件内容放到模板<template></template>中并引用
+
+            <div id="itany">
+                <my-hello></my-hello>
+                <my-hello></my-hello>
+            </div>
+
+            <template id="wbs">
+                <!-- <template>必须有且只有一个根元素 -->
+                <div>
+                    <h3>{{msg}}</h3>
+                    <ul>
+                        <li v-for="value in arr">{{value}}</li>
+                    </ul>
+                </div>
+            </template>
+
+            <script>
+                var vm=new Vue({
+                    el:'#itany',
+                    components:{
+                        'my-hello':{
+                            name:'wbs17022',  //指定组件的名称，默认为标签名，可以不设置
+                            template:'#wbs',
+                            data(){
+                                return {
+                                    msg:'欢迎来',
+                                    arr:['tom','jack','mike']
+                                }
+                            }
+                        }
+                        
+                    }
+                });	
+            </script>
+        </xmp>
+        <h3 style="color:red;">3.动态组件</h3>
+        <xmp>
+              <component :is=""></component> 多个组件使用同一个挂在点，然后动态的在他们之间进行切换
+             <keep-alive></keep-alive> 使用keep-alive组件缓存非活动组件，可以保留状态，避免重新渲染，默认每次都会销毁非活动组件并重新创建
+            
+            <keep-alive>
+                <component :is="currentView">
+                    <!-- 非活动组件将被缓存！ -->
+                </component>
+            </keep-alive>
+             
+        </xmp>
+        <div id="appzus">
+            <button @click="flag='my-hellos'">显示hello组件</button>
+            <button @click="flag='my-worlds'">显示world组件</button>
+            <div>
+ <!-- 使用keep-alive组件缓存非活动组件，可以保留状态，避免重新渲染，默认每次都会销毁非活动组件并重新创建 -->
+                <keep-alive>
+                    <component :is="flag"></component>	
+                </keep-alive>
+            </div>
+        </div>
+        <script>
+            var appzus= new Vue({
+                el:'#appzus',
+                data:{
+                        flag:'my-hellos'
+                },
+                components:{
+                    'my-hellos':{
+                        template:'<div>我是hello组件：{{x}}</div>',
+                        data(){
+                                return {
+                                    x:Math.random()
+                                }
+                            }
+                    },
+                    'my-worlds':{
+                            template:'<div>我是world组件：{{y}}</div>',
+                            data(){
+                                return {
+                                    y:Math.random()
+                                }
+                            }
+                        }
+                }
+            })	
+        </script>
+         <h3 style="color:red;">4.父子组件及组件数据传递</h3>
+         <xmp>
+           1. 子组件只能在父组件内部使用;
+           2.默认情况下，子组件无法访问父组件中的数据，每个组件作用域是独立的；
+         </xmp>
+         <h3 style="color:red;">组件数据的传递--通讯</h3>
+         <xmp>
+        1.子组件想访问父组件中的内容
+             在调用子组件时，绑定想要获取父组件中的数据
+             在子组件内部，使用props选项声明获取的数据，即接收来自父组件的数据
+             总结：父组件通过props向下传递数据给子组件
+             注：组件中的数据共有三种形式：data、props、computed 计算属性
+
+             props ：可以是数组或对象，用于接收来自父组件的数据。props 可以是简单的数组，或者使用对象作为替代，对象允许配置高级选项，如类型检测、自定义校验和设置默认值。
+             props校验：
+             Vue.component('example', {
+                props: {
+                    // 基础类型检测 (`null` 意思是任何类型都可以)
+                    propA: Number,
+                    // 多种类型
+                    propB: [String, Number],
+                    // 必传且是字符串
+                    propC: {
+                    type: String,
+                    required: true
+                    },
+                    // 数字，有默认值
+                    propD: {
+                    type: Number,
+                    default: 100
+                    },
+                    // 数组/对象的默认值应当由一个工厂函数返回
+                    propE: {
+                    type: Object,
+                    default: function () {
+                        return { message: 'hello' }
+                    }
+                    },
+                    // 自定义验证函数
+                    propF: {
+                    validator: function (value) {
+                        return value > 10
+                    }
+                    }
+                }
+            })
+        2.父组件想访问子组件中的内容。
+            1)在子组件中使用vm.$emit(事件名，数据)触发一个自定义事件   事件名称可以自定义，  数据可以有多个 用逗号隔开
+            2)父组件在使用子组件的地方监听子组件触发的事件，并在父组件中定义方法，用来获取数据
+                子组件通过events给父组件发送消息，实际上就是哦子组件把自己的数据发送给父组件
+
+            
+        </xmp>
+        <h3 style="color:red;">实例：</h3>
+        <xmp>
+            <div id="itany">
+                <my-hello></my-hello>
+            </div>
+            
+            <template id="hello">
+                <div>
+                    <h3>我是hello父组件</h3>
+                    <h3>访问自己的数据：{{msg}},{{name}},{{age}},{{user.username}}</h3>
+                    <h3>访问子组件的数据：{{sex}},{{height}}</h3>
+                    <hr>
+
+                    <my-world :message="msg" :name="name" :age="age" @e-world="getData"></my-world>  //父组件监听子组件触发时间发送过来的数据
+                </div>
+            </template>
+
+            <template id="world">
+                <div>
+                    <h4>我是world子组件</h4>
+                    <h4>访问父组件中的数据：{{message}},{{name}},{{age}},{{user.username}}</h4>
+                    <h4>访问自己的数据：{{sex}},{{height}}</h4>
+                    <button @click="send">将子组件的数据向上传递给父组件</button>
+                </div>
+            </template>
+
+            <script>
+                var vm=new Vue({ //根组件
+                    el:'#itany',
+                    components:{
+                        'my-hello':{  //父组件
+                            methods:{
+                                getData(sex,height){
+                                    this.sex=sex;
+                                    this.height=height;
+                                }
+                            },
+                            data(){
+                                return {
+                                    msg:'网博',
+                                    name:'tom',
+                                    age:23,
+                                    user:{id:9527,username:'唐伯虎'},
+                                    sex:'',
+                                    height:''
+                                }
+                            },
+                            template:'#hello',
+                            components:{
+                                'my-world':{ //子组件
+                                    data(){
+                                        return {
+                                            sex:'male',
+                                            height:180.5
+                                        }
+                                    },
+                                    template:'#world',
+                                    // props:['message','name','age','user'] //简单的字符串数组
+                                    props:{ //也可以是对象，允许配置高级设置，如类型判断、数据校验、设置默认值
+                                        message:String,
+                                        name:{
+                                            type:String,
+                                            required:true
+                                        },
+                                        age:{
+                                            type:Number,
+                                            default:18,
+                                            validator:function(value){
+                                                return value>=0;
+                                            }
+                                        },
+                                        user:{
+                                            type:Object,
+                                            default:function(){ //对象或数组的默认值必须使用函数的形式来返回
+                                                return {id:3306,username:'秋香'};
+                                            }
+                                        }
+                                    },
+                                    methods:{
+                                        send(){
+                                            // console.log(this);  //此处的this表示当前子组件实例
+                                            this.$emit('e-world',this.sex,this.height); //使用$emit()触发一个事件，发送数据
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });	
+            </script>
+        </xmp>
+         <div id="app10">
+             <my-hello></my-hello>
+         </div>
+         
+            <template id="hello">
+                <div>
+                    <h3>我是hello父组件</h3>
+                    <h3>访问自己的数据：{{msg}},{{name}},{{age}},{{user.username}}</h3>
+                    <h3>访问子组件的数据：{{sex}},{{height}}</h3>
+                    <hr>
+
+                    <my-world :message="msg" :name="name" :age="age" @e-world="getData"></my-world>  //父组件监听子组件触发时间发送过来的数据
+                </div>
+            </template>
+
+            <template id="world">
+                <div>
+                    <h4>我是world子组件</h4>
+                    <h4>访问父组件中的数据：{{message}},{{name}},{{age}},{{user.username}}</h4>
+                    <h4>访问自己的数据：{{sex}},{{height}}</h4>
+                    <button @click="send">将子组件的数据向上传递给父组件</button>
+                </div>
+            </template>
+         <script>
+             var app10 = new Vue({
+                 el:'#app10',
+                 components:{
+                     'my-hello':{  //父组件
+					methods:{
+						getData(sex,height){
+							this.sex=sex;
+							this.height=height;
+						}
+					},
+					data(){
+						return {
+							msg:'网博',
+							name:'tom',
+							age:23,
+							user:{id:9527,username:'唐伯虎'},
+							sex:'',
+							height:''
+						}
+					},
+					template:'#hello',
+					components:{
+						'my-world':{ //子组件
+							data(){
+								return {
+									sex:'male',
+									height:180.5
+								}
+							},
+							template:'#world',
+							// props:['message','name','age','user'] //简单的字符串数组
+							props:{ //也可以是对象，允许配置高级设置，如类型判断、数据校验、设置默认值
+								message:String,
+								name:{
+									type:String,
+									required:true
+								},
+								age:{
+									type:Number,
+									default:18,
+									validator:function(value){
+										return value>=0;
+									}
+								},
+								user:{
+									type:Object,
+									default:function(){ //对象或数组的默认值必须使用函数的形式来返回
+										return {id:3306,username:'秋香'};
+									}
+								}
+							},
+							methods:{
+								send(){
+									// console.log(this);  //此处的this表示当前子组件实例
+									this.$emit('e-world',this.sex,this.height); //使用$emit()触发一个事件，发送数据
+								}
+							}
+						}
+					}
+				}
+                 }
+             })
+         </script>
+    </div>
+    <!--非父子之间的通信-->
+    <h3 style="color:red;">非父子之间的通信</h3>    
+    <xmp>
+         非父子组件间的通信，可以通过一个空的Vue实例作为中央事件总线（事件中心），用它来触发事件和监听事件
+
+        var Event=new Vue();  创建一个空实例
+        Event.$emit(事件名,数据);  触发一个事件
+        Event.$on(事件名,data => {});  接受一个事件
+    </xmp>
+    <div id="ita">
+		<my-a></my-a>
+		<my-b></my-b>
+		<my-c></my-c>
+	</div>
+
+	<template id="a">
+		<div>
+			<h3>A组件：{{name}}</h3>
+			<button @click="send">将数据发送给C组件</button>
+		</div>
+	</template>
+
+	<template id="b">
+		<div>
+			<h3>B组件：{{age}}</h3>
+			<button @click="send">将数组发送给C组件</button>
+		</div>
+	</template>
+	
+	<template id="c">
+		<div>
+			<h3>C组件：{{name}}，{{age}}</h3>
+		</div>
+	</template>
+
+	<script>
+		//定义一个空的Vue实例
+		var Event=new Vue();
+
+		var A={
+			template:'#a',
+			data(){
+				return {
+					name:'tom'
+				}
+			},
+			methods:{
+				send(){
+					Event.$emit('data-a',this.name);
+				}
+			}
+		}
+		var B={
+			template:'#b',
+			data(){
+				return {
+					age:20
+				}
+			},
+			methods:{
+				send(){
+					Event.$emit('data-b',this.age);
+				}
+			}
+		}
+		var C={
+			template:'#c',
+			data(){
+				return {
+					name:'',
+					age:''
+				}
+			},
+			mounted(){ //在模板编译完成后执行
+				Event.$on('data-a',name => {
+					this.name=name;
+					// console.log(this);
+				});
+
+				Event.$on('data-b',age => {
+					this.age=age;
+				});
+			}
+		}
+
+		var vm=new Vue({
+			el:'#ita',
+			components:{
+				'my-a':A,
+				'my-b':B,
+				'my-c':C
+			}
+		});	
+	</script>
+    <!--单向数据流-->
+     <h3 style="color:red;">单向数据流</h3>
+     <xmp>
+         props是单向绑定的，当父组件的属性变化时，将传导给子组件，但是不会反过来
+        而且不允许子组件直接修改父组件中的数据，报错
+        解决方式：
+            方式1：如果子组件想把它作为局部数据来使用，可以将数据存入另一个变量中再操作，不影响父组件中的数据
+            方式2：如果子组件想修改数据并且同步更新到父组件，两个方法：
+                a.使用.sync（1.0版本中支持，2.0版本中不支持，2.3版本又开始支持）
+                    需要显式地触发一个更新事件
+                b.可以将父组件中的数据包装成对象，然后在子组件中修改对象的属性(因为对象是引用类型，指向同一个内存空间)
+
+        <comp :foo.sync="bar"></comp>
+        会被扩展为：
+        <comp :foo="bar" @update:foo="val => bar = val"></comp>
+        当子组件需要更新 foo 的值时，它需要显式地触发一个更新事件：
+        this.$emit('update:foo', newValue)
+     </xmp>
+     <div id="app11">
+         <span>父组件：{{name}}</span>
+		<input type="text" v-model="name">
+		<span>父组件：{{user.age}}</span>
+
+
+		<my-hello :name.sync="name" :user="user"></my-hello>
+	</div>
+	
+	<template id="hellos">
+		<div>
+			<span>子组件：{{name}}</span>
+			<span>子组件：{{user.age}}</span>
+			<button @click="change">修改数据</button>
+		</div>
+	</template>
+     <script>
+         var app11 = new Vue({
+             el:'#app11',
+             data:{
+				name:'tom',
+				user:{
+					name:'zhangsan',
+					age:24
+				}
+			},
+			components:{
+				'my-hello':{ //子组件
+					template:'#hellos',
+					props:['name','user'],
+					data(){
+						return {
+							username:this.name //方式1：将数据存入另一个变量中再操作
+						}
+					},
+					methods:{
+						change(){
+							// this.username='alice';
+							// this.name='alice';
+							// this.$emit('update:name','alice'); //方式2：a.使用.sync，需要显式地触发一个更新事件
+							this.user.age=18;
+						}
+					}
+				}
+			}
+         })
+     </script>
+     <!--slot内容分发-->
+    <h3 style="color:red;">slot内容分发</h3>    
+    <xmp>
+        为了让组件可以组合，我们需要一种方式来混合父组件的内容与子组件自己的模板。这个过程被称为 内容分发
+
+       用来获取组件中的原内容，类似angular中的transclude指令
+
+    </xmp>
+    <div id="apples">
+     	<!-- <my-hello>wbs17022</my-hello> -->
+		<my-hellosls>
+			<ul slot="s1">
+				<li>有序aaa</li>
+				<li>有序bbb</li>
+				<li>有序ccc</li>
+			</ul>
+			<ol slot="s2">
+				<li>无序111</li>
+				<li>无序222</li>
+				<li>无序333</li>
+			</ol>
+		</my-hellosls>
+	</div>
+
+	<template id="hellosls">
+		<div>
+			<slot name="s2"></slot>
+			<span>welcome to itany</span>
+			<!-- <slot>如果没有原内容，则显示该内容</slot> -->
+			<slot name="s1"></slot>
+		</div>
+	</template>
+
+	<script>
+
+		var apples=new Vue({
+			el:'#apples',
+			components:{
+				'my-hellosls':{
+					template:'#hellosls'
+				}
+			}
+		});	
+	</script>
+    <hr>
+    <br>
+    <div style="width:96%;margin-left:2%">
+        <h2>路由</h2>
+        <button><a href="https://router.vuejs.org/zh-cn/" target="_blank">路由官方文档</a></button>
+        <br>
+        <xmp>
+           传参的两种方式：
+            a.查询字符串：login?name=tom&pwd=12    {{$route.query}}
+            b.rest风格url：regist/alice/456{{$route.params}}      
+        </xmp>
+        <div id="apir">
+            <div>
+                <!-- 使用 router-link 组件来导航. -->
+                <!-- <router-link> 默认会被渲染成一个 `<a>` 标签  。。 通过传入 `to` 属性指定链接 -->
+                <router-link to="/home">主页</router-link>
+                <router-link to="/user">用户</router-link>
+            </div>
+            <div>
+                <!--显示路由的内容，路由匹配到的组件将渲染在这里-->
+                <transition enter-active-class="animated bounceInLeft" leave-active-class="animated bounceOutRight">
+                    <router-view></router-view>
+                </transition>
+            </div>
+            <button @click="push">添加路由</button>
+		    <button @click="replace">替换路由</button>
+        </div>
+        <template id="user">
+            <div>
+                <h3>用户信息</h3>
+                <ul>
+                    <!--<li><router-link to="/user/login">用户登录</router-link></li>
+                    <li><router-link to="/user/regist">用户注册</router-link></li>-->
+                    <router-link to="/user/login?name=tom&pwd=123" tag="li">用户登录</router-link>
+                    <router-link to="/user/regist/asd/1234" tag="li">用户注册</router-link>
+                </ul>
+                <router-view></router-view>
+            </div>
+        </template>
+        <script>
+            // 1.定义组件
+            var home={
+                template:'<span>我是主页</span>'
+            }
+            var User={
+                template:'#user'
+            }
+             var Login={
+                template:'<span>用户登录.....获取参数：{{$route.query}},{{$route.path}}</span>'
+            }
+             var Regist={
+                template:'<span>用户注册...获取参数：{{$route.params}},{{$route.path}}</span>'
+            }
+            //2配置路由
+            const routes =[
+                // 动态路径参数 以冒号开头
+                { 
+                    path: '/home', 
+                    component: home
+                },
+                { 
+                    path: '/user',
+                    component: User,
+                    children:[
+                        {
+                            path:'login',
+                            component:Login
+                        },
+                        {
+                            path:'regist/:username:tais/:pawssage:123',
+                            component:Regist
+                        }
+                    ]
+                },
+                {//重定向
+                     path: '*',
+                     redirect:'/home'
+                } 
+            ]
+
+            //3.创建路由实例
+            const router = new VueRouter({
+                routes, //简写 routes:routes
+                // mode:'history',  
+                linkActiveClass:'active'
+
+            })
+            //4.创建根实例并将路由挂在到vue实例上
+            new Vue({
+                el:'#apir',
+                router,  //注入路由
+                methods:{
+                    push(){
+                        router.push({path:'home'}); //添加路由
+                    },
+                    replace(){
+                        router.replace({path:'user'}); //替换路由，没有历史记录
+                    }
+                    
+                }
+            })
+            
+        </script>
+        <h4 style="color:red">单文件组件</h4>
+        <br>
+        <button type=""><a href="http://webpack.github.io/">webpack官方文档</a></button>
+        <xmp>
+            1.  .vue文件
+                是vue.js自定义的一种文件格式（<template>html</template> 、<style></style>、<script></script>）
+
+            2. vue-loader  
+                浏览器本身并不认为.vue文件，所以必须对.vue文件进行加载解析，此时需要vue-loader
+                类似的loader还有许多，如：html-loader、css-loader、style-loader、babel-loader等
+                需要注意的是vue-loader是基于webpack的     
+
+            3. webpack
+                webpack是一个前端资源模板化加载器和打包工具，它能够把各种资源都作为模块来使用和处理
+                实际上，webpack是通过不同的loader将这些资源加载后打包，然后输出打包后文件 
+                简单来说，webpack就是一个模块加载器，所有资源都可以作为模块来加载，最后打包输出
+                [官网](http://webpack.github.io/)     
+                webpack有一个核心配置文件：webpack.config.js，必须放在项目根目录下
+
+                    |-index.html
+                    |-main.js   入口文件       
+                    |-App.vue   vue文件
+                    |-package.json  工程文件/项目描述文件、依赖
+                    |-webpack.config.js  webpack配置文件
+                    |-.babelrc   Babel配置文件
+
+
+
+                     编写App.vue
+
+                    4.3 安装相关模板    
+                    cnpm install vue -S
+
+                    cnpm install webpack -D
+                    cnpm install webpack-dev-server -D
+
+                    cnpm install vue-loader -D
+                    cnpm install vue-html-loader -D
+                    cnpm install css-loader -D
+                    cnpm install vue-style-loader -D
+                    cnpm install file-loader -D   
+
+                    cnpm install babel-loader -D
+                    cnpm install babel-core -D
+                    cnpm install babel-preset-env -D  //根据配置的运行环境自动启用需要的babel插件
+                    cnpm install vue-template-compiler -D //预编译模板
+
+                    合并：cnpm install -D webpack webpack-dev-server vue-loader vue-html-loader css-loader vue-style-loader file-loader babel-loader babel-core babel-preset-env  vue-template-compiler
+
+                4.4 编写main.js    
+
+                4.5 编写webpack.config.js
+
+                4.6 编写.babelrc    
+
+                4.7 编写package.json
+
+                4.8 运行测试
+                    npm run dev    
+        </xmp>
+    </div>
+    
+    <div style="width:96%;margin-left:2%">
+        
+    </div>
+    <div style="width:96%;margin-left:2%">
+    </div>
+    <div style="width:96%;margin-left:2%">
+    </div>
+</body>
+</html>

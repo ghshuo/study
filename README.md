@@ -9,11 +9,12 @@ vue学习笔记地址： https://ghshuo.github.io/study/vue/vueStudy.html
  自定义指令
  过度动画
  组件
-   1.自定义  创建组件
+   
+     
+       1.自定义  创建组件
             Vue.component('my-component', {
                 // 选项
             })
-     
           2* 全局组件，可以在所有vue实例中使用
           Vue.component('my-hello',{
                 template:'<---h4>{{name}}<--/h4>',

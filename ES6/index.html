@@ -9,13 +9,7 @@
   <script src="js/jquery.min.js"></script>
 </head>
 <body>
-
-  <br>
-  <hr>
-  <h2></h2>
-  <code class="lang"></code>
-  <script></script>
-
+<a href="http://es6.ruanyifeng.com/">ECMAScript 6 Api</a>
   <h2>let和const</h2>
   <code class="lang">
     <h3>相同点：</h3>
@@ -126,10 +120,334 @@
           console.log('arr=' + arr);
         }, false);
   </script>
+  <br>
+  <hr>
+  <h2>weakSet</h2>
+  <code class="lang">
+     它与Set十分相似，对象的值也不能是重复的，与Set不同点:
+    1.WeakSet成员只能够是对象。 
+    2.作为WeakSet成员的对象都是弱引用，即垃圾回收机制不考虑WeakSet对该对象的引用，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存，不考虑该对象还存在于WeakSet之中。这个特点意味着，无法引用WeakSet的成员，因此WeakSet是不可遍历的。
+    3.使用WeakSet存储对象实例的好处是，由于是对对象实例的引用，不会被计入内存回收机制，所以删除实例的时候，不用考虑weakset，也不会出现内存泄漏。
+  </code>
+  <script></script>
+  <br>
+  <hr>
+  <h2>Map</h2>
+  <code class="lang">
+      ES6 提供了 Map 数据结构。它类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。
+      也就是说，Object 结构提供了“字符串—值”的对应，Map 结构提供了“值—值”的对应，是一种更完善的Hash 结构实现。
+      如果你需要“键值对”的数据结构，Map 比 Object 更合适。
+      const map = new Map([
+        ['name', '张三'],
+        ['title', 'Author']
+      ]);
+
+      map.size // 2
+      map.has('name') // true
+      map.get('name') // "张三"
+      map.has('title') // true
+      map.get('title') // "Author"
+
+
+
+      它们本质与对象一样，都是键值对的集合，但是他们与Object对象主要的不同是，键可以是各种类型的数值，而Object对象的键只能是字符串类型或者Symbol类型值。Map和WeakMap是更为完善的Hash结构。 
+      1.对象和Map 
+      //---------对象--------------------------- 
+      var keyObj = {}; 
+      var dataObj = {}; 
+      dataObj[keyObj] = "大脚好"; 
+      虽然表面上看dataObj对象的键是对象keyObj，其实不是，dataObj[keyObj]会将keyObj转换转为字符串"[object Object]"。 
+      //----------Map---------------------------- 
+      var mapData = new Map(); 
+      var objKey = {p: "antzone"}; 
+      mapData.set(objKey, "对象键");    //添加新元素 
+      console.log(mapData.get(objKey)); //获取 
+      console.log(mapData.has(objKey));  //判断是否含有 
+      console.log(mapData.delete(objKey)); //删除键 
+      mapData.clear();    //清空 
+      
+      2.数组作为构造函数参数 
+      var mapData = new Map([["webName", "百度"], ["url", "www.baidu.com"]]); 
+      console.log(mapData.size); 
+      console.log(mapData.has("webName")); 
+      console.log(mapData.get("webName")); 
+      console.log(mapData.has("url")); 
+      console.log(mapData.get("url")); 
+      构造函数参数为数组执行的是如下算法(数组的forEach方法) 
+      forEach方法将会以插入顺序对Map对象中的每一个键值对执行一次参数中提供的回调函数。 
+      value:可选，元素的值。 
+      key:可选，元素的键。 
+      Map:可选，当前的Map对象。 
+      thisArg:可选，callback执行时其this的值。  
+      mapData.forEach(function (value,key) { 
+        console.log(value,key); 
+      }) 
+      
+      var arr = [["webName", "百度"], ["url", "www.baidu.com"]]; 
+      var mapData = new Map(); 
+      arr.forEach(([key, value]) => mapData.set(key, value)); 
+      
+      3.由于Map对象的键可以是对象，所以只有对同一个对象的引用，Map对象才将其视为同一个键。 
+      NaN不严格相等于自身，但Map将其视为同一个键 
+      let mapData = new Map(); 
+      mapData.set(NaN, 5); 
+      console.log(mapData.get(NaN)); 
+      mapData.set(-0, 5); 
+      console.log(mapData.get(+0)); 
+      4.Map遍历 
+      //---------转成数组----------- 
+      var mapData = new Map([["webName", "百度"], ["url", "www.baidu.com"]]); 
+      var arr = [...mapData]; 
+      console.log(arr); 
+      //---------for--of循环-------- 
+      var mapData = new Map([["webName", "百度"], ["url", "www.baidu.com"]]); 
+      for(let elem of mapData) { 
+        console.log(elem); 
+      } 
+      //----------其他函数------------- 
+      var keyIterator = mapData.keys();//键遍历器
+      console.log(keyIterator);
+      var valueIterator = mapData.values();  //值遍历器
+      console.log(keyIterator.next());   //遍历器用法
+      
+      console.log(valueIterator); 
+      var size = mapData.size;      //键值对数量 
+      console.log(size); 
+      
+      二、WeakMap数据结构 
+      WeakMap结构与Map结构基本类似。 
+      区别是它只接受对象作为键名，不接受其他类型的值作为键名。键名是对象的弱引用，当对象被回收后，WeakMap自动移除对应的键值对，WeakMap结构有助于防止内存泄漏。 
+      var wm = new WeakMap(); 
+      var obj = new Object(); 
+      wm.set(obj,'对象1'); 
+      obj=null; 
+      wm.get(obj);    //undefined 
+      wm.has(obj);    //false 
+      
+      由于WeakMap对象不可遍历，所以没有size属性。  
+  </code>
+
+  <br>
+  <hr>
+  <h2>Iterator</h2>
+  <code class="lang">
+    遍历器（Iterator）就是这样一种机制。它是一种接口，为各种不同的数据结构提供统一的访问机制。任何数据结构只要部署 Iterator 接口，就可以完成遍历操作（即依次处理该数据结构的所有成员）。
+    Iterator 的作用有三个：
+      一是为各种数据结构，提供一个统一的、简便的访问接口；
+      二是使得数据结构的成员能够按某种次序排列；
+      三是 ES6 创造了一种新的遍历命令for...of循环，Iterator 接口主要供for...of消费。
+    Iterator 的遍历过程是这样的。
+    （1）创建一个指针对象，指向当前数据结构的起始位置。也就是说，遍历器对象本质上，就是一个指针对象。
+    （2）第一次调用指针对象的next方法，可以将指针指向数据结构的第一个成员。
+    （3）第二次调用指针对象的next方法，指针就指向数据结构的第二个成员。
+    （4）不断调用指针对象的next方法，直到它指向数据结构的结束位置。
+
+    let arr = ["百度", 4, "www.baidu.com", "北京大学"];
+       let it = arr[Symbol.iterator]();
+       console.log(it.next());  {value: "百度", done: false}
+      console.log(it.next());   {value: 4, done: false}
+       console.log(it.next());  {value: "www.baidu.com", done: false}
+       console.log(it.next());  {value: "北京大学", done: false}
+       console.log(it.next());  {value: undefined, done: true}
+       每一次调用next()方法都会返回一个对象，此对象包含value和done属性，
+       value属性值是数据结构成员的值，如果遍历完成value属性值为undefined；
+       done属性是一个布尔值，如果为true，说明遍历完成，如果为false，说明遍历尚未完成 
+
+  </code>
+  <button id="Iterator">Iterator查看效果</button>
   <script>
-     window.onload = function () {
-       
-     }
+    document.getElementById('Iterator').addEventListener('click', function () {
+      let arr = ["百度", 4, "www.baidu.com", "北京大学"];
+      let it = arr[Symbol.iterator]();
+      console.log(it.next());
+      console.log(it.next());
+      console.log(it.next());
+      console.log(it.next());
+      console.log(it.next());
+    }, false);
   </script>
+  <code>
+    .默认具有遍历器接口的数据结构,for of循环 
+      当对一个数据结构使用for of循环遍历的时候，会自动调用遍历器接口。 
+      ES6中有四类数据结构默认具有遍历器接口: 
+      （1）数组 
+      （2）某些类数组 
+      （3）Map 
+      （4）Set 
+      var arr = [1,2,3,'aa','bb','cc']; 
+      for(let elem of arr) { 
+        console.log(elem); 
+      } 
+  </code>
+  <button id="forIn">Iterator查看效果</button>
+  <script>
+    document.getElementById('forIn').addEventListener('click', function () {
+      var arr = [1, 2, 3, 'aa', 'bb', 'cc'];
+      for (let elem of arr) {
+        console.log(elem);
+      } 
+    }, false);
+  </script>
+  <br>
+  <hr>
+  <h2>Promise</h2>
+  <code class="lang">
+    Promise 是异步编程的一种解决方案，比传统的解决方案——回调函数和事件——更合理和更强大。它由社区最早提出和实现，ES6 将其写进了语言标准，统一了用法，原生提供了Promise对象
+    传统实现异步操作就是采用回调函数，回调函数方式本身没有什么问题，但是在多重回调层层嵌套的情况下，那么代码的可阅读性就会出现问题。
+    Promise对象是一个新的异步操作解决方案，比原有的回调函数等方式更为合理
+    Promise对象具有三种状态：Pending（等待）、Resolved（已完成）和Rejected（未完成）。
+    Promise对象状态的改变只有两种可能：Pending转变为Resolved或者Pending转变为Rejected。
+     document.getElementById('Promise').addEventListener('click', function () {
+      let param;  //传递参数载体
+      function p1() {
+        return new Promise(function (resolve, reject) {
+          setTimeout(function () {
+            console.log("aaaaa");
+            //resolve(123);
+            param = '第1';
+            reject(123);
+          }, 3000);
+        });
+      }
+      function p2() {
+        return new Promise(function (resolve, reject) {
+          setTimeout(function () {
+            console.log("bbbbb");
+            param = '第2';
+            resolve(456); //继续向下
+            //reject(456);  //截停
+          }, 2000);
+        });
+      }
+      function p3() {
+        return new Promise(function (resolve, reject) {
+          setTimeout(function () {
+            console.log("cccccc");
+            console.log('传来:' + param);
+            param = '第3';
+            resolve(789);
+          }, 1000);
+        });
+      }
+
+      function p4() {
+        return new Promise(function (resolve, reject) {
+          setTimeout(function () {
+            console.log("dddddd");
+            console.log('传来:' + param);
+            resolve('结束');
+          }, 1000);
+        });
+      }
+
+      p1().then(p2).then(p3).then(function (data) {
+          console.log('data: ' + data);
+        })
+        .catch(function (error) {
+          console.log('end,error: ' + error);
+          if (error == 123) {           //如果第1步出错
+            p3().then(p4);
+          } else if (err == 456) {
+            p4();
+          }
+
+        });   
+     }, false);
+  </code>
+  <button id="Promise">Promise查看效果</button>
+  <script>
+    document.getElementById('Promise').addEventListener('click', function () {
+      let param;  //传递参数载体
+      function p1() {
+        return new Promise(function (resolve, reject) {
+          setTimeout(function () {
+            console.log("aaaaa");
+            //resolve(123);
+            param = '第1';
+            reject(123);
+          }, 3000);
+        });
+      }
+      function p2() {
+        return new Promise(function (resolve, reject) {
+          setTimeout(function () {
+            console.log("bbbbb");
+            param = '第2';
+            resolve(456); //继续向下
+            //reject(456);  //截停
+          }, 2000);
+        });
+      }
+      function p3() {
+        return new Promise(function (resolve, reject) {
+          setTimeout(function () {
+            console.log("cccccc");
+            console.log('传来:' + param);
+            param = '第3';
+            resolve(789);
+          }, 1000);
+        });
+      }
+
+      function p4() {
+        return new Promise(function (resolve, reject) {
+          setTimeout(function () {
+            console.log("dddddd");
+            console.log('传来:' + param);
+            resolve('结束');
+          }, 1000);
+        });
+      }
+
+      p1().then(p2).then(p3).then(function (data) {
+          console.log('data: ' + data);
+        })
+        .catch(function (error) {
+          console.log('end,error: ' + error);
+          if (error == 123) {           //如果第1步出错
+            p3().then(p4);
+          } else if (err == 456) {
+            p4();
+          }
+
+        });   
+     }, false);
+  </script>
+  <br>
+  <hr>
+  <h2>箭头函数</h2>
+  <code class="lang">
+    如果箭头函数不需要参数或需要多个参数，就使用一个圆括号代表参数部分。
+    var f = () => 5;// 等同于  var f = function () { return 5 };
+    var sum = (num1, num2) => num1 + num2;
+    // 等同于
+      var sum = function(num1, num2) {
+        return num1 + num2;
+      };
+
+      箭头函数有几个使用注意点。
+    （1）函数体内的this对象，就是定义时所在的对象，而不是使用时所在的对象。
+    （2）不可以当作构造函数，也就是说，不可以使用new命令，否则会抛出一个错误。
+    （3）不可以使用arguments对象，该对象在函数体内不存在。如果要用，可以用 rest 参数代替。
+    （4）不可以使用yield命令，因此箭头函数不能用作 Generator 函数。
+  </code>
+  <button id="jiantou">箭头函数 </button>
+  <script>
+     document.getElementById('jiantou').addEventListener('click', function () {
+        var o = {
+         x: 1,
+         func: function () { console.log(this.x) },
+         test: function () {
+           setTimeout(() => { this.func() }, 100);
+         }
+       };
+       o.test();    //这回this就指向o了
+      }, false);
+  </script>
+  <br>
+  <hr>
+  <h2>class类</h2>
+  <code class="lang"></code>
+  <script></script>
 </body>
 </html>

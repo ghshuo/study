@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue.directives自定义指令</title>
+<script src="js/vue.js"></script>
+  <script src="js/jquery.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div v-jsgeng="color">{{num}}</div>
+    <button @click="add">增加</button>  
+    <button onclick="unbind()">解绑</button>
+  </div>
+   
+  
+  <script>
+     function unbind() {
+       alert(11)
+        app.$destroy();
+      }
+
+    // 自定义指令
+    // Vue.directive("jsgeng",function (el,bingding) {
+    //   // console.log(el);
+    //   // console.log(bingding);
+    //   // console.log(bingding.value);
+    //   // console.log(bingding.name);
+    //   el.style="color:"+ bingding.value;
+    // });
+    Vue.directive("jsgeng",{
+      bind: function (el,bingding) {//被绑定 只调用一次
+      el.style = "color:" + bingding.value;
+        console.log('1 - bind被绑定');
+      },
+      inserted: function () {//绑定到节点
+        console.log('2 - inserted绑定到节点');
+      },
+      update: function () {//组件更新
+        console.log('3 - update组件更新');
+      },
+      componentUpdated: function () {//组件更新完成
+        console.log('4 - componentUpdated组件更新完成');
+      },
+      unbind: function () {//解绑
+        console.log('5 - unbind解绑');
+      }
+    })
+    var app = new Vue({
+      el: '#app',
+      data:{
+        num: 9,
+        color: 'red'
+      },
+      methods: { // 构造器
+        add:function(){
+          this.num++;
+        }
+      }
+    })
+  </script>
+</body>
+</html>

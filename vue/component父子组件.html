@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>component父子组件</title>
+  <script src="js/vue.js"></script>
+  <script src="js/jquery.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <myform></myform>
+  </div>
+
+  <script>
+    // 构造器外部写局部注册组件
+
+    // var myform = {
+    //   template: '<div style="color:#ccc;">I from heBei</div>'
+    // }
+    // // 构造器
+    // var app = new Vue({
+    //   el: "#app",
+    //   components: {
+    //     "myform": myform
+    //   }
+    // })
+
+  </script>
+  <script>
+    // 1. 父子组件的嵌套
+
+    // 子组件
+     var city = {
+        template: '<div style="color:#ccc;">I from heBei</div>'
+    }
+    // 父组件
+    var myform = {
+      template: `
+      <div>
+      <p style="color:red;">I from Chinal</p>
+      <city></city>
+      </div>
+      `,
+      components: {
+        "city": city
+      }
+    }
+   
+    // 构造器
+   var app = new Vue({
+     el: "#app",
+     components: {
+       "myform" : myform
+     }
+   })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue.set全局操作</title>
+  <script src="js/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+   {{message}}
+
+  </div>
+  <template id="dier">
+      <h2> 第二种我是template标签模板</h2>
+  </template>
+
+  <script type="x-template" id="disan">
+          <h2 style="color:red">我是第三种script标签模板</h2>
+  </script>
+  <script type="text/javascript">
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+        message: 'hello word!'
+      },
+      
+      // 第一种模板
+      // template:`
+      //   <h2> 第一种我是选项模板</h2>
+      // `
+
+      // 第二种模板
+      // template: '#dier'
+
+       // 第三种模板
+      template: '#disan'
+    })
+  </script>
+</body>
+
+</html>

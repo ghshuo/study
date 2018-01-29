@@ -10,7 +10,7 @@ vue学习笔记地址： https://ghshuo.github.io/study/vue/vueStudy.html
  过度动画
  组件
  
-# es6学习笔记地址：https://ghshuo.github.io/study/es6/index.html
+# es6学习笔记地址：https://ghshuo.github.io/study/Es6/index.html
 
 let
 const

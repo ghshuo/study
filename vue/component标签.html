@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>component父子组件</title>
+  <script src="js/vue.js"></script>
+  <script src="js/jquery.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <component v-bind:is="who"></component>
+    <button @click=chage>改变</button>
+  </div>
+  <script>
+    var componentA = {
+      template: `<div style="color: red;"> 我说componentA</div>`
+    }
+    var componentB = {
+      template: `<div style="color: green;"> 我说componentB</div>`
+    }
+    var componentC = {
+      template: `<div style="color: #CCC;"> 我说componentC</div>`
+    }
+    
+    var app = new Vue({
+      el: '#app',
+      data: {
+        who: 'componentA'
+      },
+      components: {
+        "componentA": componentA,
+        "componentB": componentB,
+        "componentC": componentC,
+      },
+      methods: {
+        chage:function(){
+          if(this.who == "componentA") {
+            this.who = "componentB"
+          } else if (this.who == "componentB"){
+            this.who = "componentC"
+          }else {
+            this.who = "componentA"            
+          }
+        }
+      }
+
+    })
+  </script>
+</body>
+
+</html>

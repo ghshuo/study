@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>methods计算选项</title>
+  <script src="js/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    {{ a }}<br>
+     methods中参数的传递<br>
+    <p><button @click="add(2)">add</button></p>
+    native 给组件绑定构造器里的原生事件  @click.native="add(2)"<br>
+    <p><btn @click.native="add(2)">add</btn></p>
+    
+  </div>
+   作用域外部调用构造器里的方法 onclick="app.add(3)"
+  <button onclick="app.add(3)">外部调用构造器里的方法</button>
+  <script type="text/javascript">
+    // 添加组件
+    var btn = {
+      template: `<button>组件add</button>`
+    }
+    var app = new Vue({
+      el: '#app',
+      data: {
+        a: 1
+      },
+      components: {
+        "btn": btn
+      },
+      methods: {
+        add: function (num) {
+          if(num!=''){
+            this.a+= num;
+          }else{
+            this.a ++
+          }
+         
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

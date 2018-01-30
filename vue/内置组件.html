@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <hsgeng> 
+            <!-- 组件中传入值 -->
+            <span slot="bolgUrl">{{hsgengDate.bolgUrl}}</span>
+            <span slot="netName">{{hsgengDate.netName}}</span>
+            <span slot="skill">{{hsgengDate.skill}}</span>
+        </hsgeng>
+    </div>
+    <!-- 模板中接收数据 -->
+    <template id="tep">
+        <div>
+            <p>博客地址：<slot name="bolgUrl"></slot></p>
+            <p>网名：<slot name="netName"></slot></p>
+            <p>技术：<slot name="skill"></slot></p>
+        </div>
+    </template>
+    <script type="text/javascript">
+        // 配置组件
+        var hsgeng= {
+            template:'#tep'
+        }
+        var app = new Vue({
+            el:'#app',
+            data: {
+                hsgengDate: {
+                    bolgUrl: 'http://genghongshuo.com.cn',
+                    netName: '莫小耿',
+                    skill: 'Web前端'
+                }
+            },
+            components: {
+                'hsgeng': hsgeng
+            }
+        })
+    </script>
+</body>
+</html>

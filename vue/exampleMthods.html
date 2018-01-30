@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>exampleMthods</title>
+  <script src="js/vue.js"></script>
+</head>
+
+<body>
+     <div id = "app" ></div >
+      <p><button onclick="destroy()">销毁</button></p>
+      <p><button onclick="relaod()">更新</button></p>
+      <p><button onclick="tick()">修改</button></p>
+      <script type="text/javascript">
+      var hsgeng = Vue.extend({
+        template: `<p>{{ message }}</p>`,
+        data:function(){
+          return {
+            message:'Hello ,I am hsgeng'
+          }
+        },
+        mounted:function(){
+          console.log('mounted 被创建');
+        },
+        destroyed: function() {
+          console.log('destroyed 销毁之后');
+        },
+        updated:function(){
+          console.log('updated 刷新之后');          
+        }
+      })
+      // 挂载
+      var vm = new hsgeng().$mount("#app");
+
+      // 卸载 
+      function destroy() {
+        vm.$destroy();
+      }
+
+       // 更新
+      function relaod() {
+        vm.$forceUpdate();
+      }
+    
+     // 修改
+      function tick() {
+          vm.message = "update message info ";
+          vm.$nextTick(function () {
+            console.log('message更新完后我被调用了');
+          })
+        }
+    </script>
+</body>
+
+</html>

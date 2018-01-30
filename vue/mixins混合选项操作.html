@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>methods计算选项</title>
+  <script src="js/vue.js"></script>
+</head>
+
+<body>
+  <h1>Mixins Option Demo</h1>
+   mixins 选项接受一个混合对象的数组。这些混合实例对象可以像正常的实例对象一样包含选项，他们将在 Vue.extend() 里最终选择使用相同的选项合并逻辑合并。举例：如果你混合包含一个钩子而创建组件本身也有一个，两个函数将被调用。Mixin
+  钩子按照传入顺序依次调用，并在调用组件自身的钩子之前被调用。
+    <hr>
+    <div id="app">
+        <p>num:{{ num }}</p>
+        <P><button @click="add">增加数量</button></P>
+    </div>
+ 
+    <script type="text/javascript">
+        // 额外临时加入需求，用于显示日志
+        var addLog={
+            updated:function(){
+                console.log("数据放生变化,变化成"+this.num+".");
+            }
+        };
+
+        // 全局API混入方式
+        Vue.mixin({
+          updated: function () {
+            console.log('我是全局被混入的');
+          }
+        });
+
+        var app=new Vue({
+            el:'#app',
+            data:{
+                num:1
+            },
+            methods:{
+                add:function(){
+                    this.num++;
+                }
+            },
+            updated:function(){
+              console.log('我是原生的undated');
+            },
+            mixins:[addLog] // 混入   可以混入多个
+            // 混入先执行、原生的后执行
+        })
+
+        // 定义一个混合对象
+          var myMixin = {
+            created: function () {
+              this.hello()
+            },
+            methods: {
+              hello: function () {
+                console.log('hello from mixin!')
+              }
+            }
+          }
+
+          // 定义一个使用混合对象的组件
+          var Component = Vue.extend({
+            mixins: [myMixin]
+          })
+
+          var component = new Component() // => "hello from mixin!"
+    </script>
+</body>
+
+</html>

@@ -2,7 +2,7 @@
 学习笔记
 
 # vue官网地址：https://cn.vuejs.org/
-vue学习笔记地址： https://ghshuo.github.io/study/vue/vueStudy.html
+vue学习笔记地址： https://ghshuo.github.io/study/vue/index.html
  生命周期
  ajax、 
  vue实例的属性和方法

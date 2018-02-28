@@ -1,7 +1,9 @@
 import Vue from 'vue' // 引入vue
 import Router from 'vue-router' //引入vue-router
 import HelloWorld from '@/components/HelloWorld' //引入vue-router
-import Hi from '@/components/Hi'
+import Second from '@/components/second'
+import Third from '@/components/third'
+import Fourth from '@/components/fourth'
 
 Vue.use(Router) // Vue全局使用Router
 
@@ -11,8 +13,14 @@ export default new Router({
         name: 'HelloWorld', // 路由名称，
         component: HelloWorld // 对应的组件模板
     }, {
-        path: '/Hi',
-        name: 'Hi',
-        component: Hi
+        path: '/Second',
+        name: 'Second',
+        component: Second,
+        children: [
+            { path: '/', component: Second },
+            { path: 'third', component: Third },
+            { path: 'Fourth', component: Fourth }
+
+        ]
     }]
 })

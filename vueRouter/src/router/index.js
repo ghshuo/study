@@ -14,12 +14,11 @@ export default new Router({
         component: HelloWorld // 对应的组件模板
     }, {
         path: '/Second',
-        name: 'Second',
         component: Second,
         children: [
-            { path: '/', component: Second },
-            { path: 'third', component: Third },
-            { path: 'Fourth', component: Fourth }
+            { path: '/', name: 'HelloWorld/Second', component: Second },
+            { path: 'third', name: 'Third', component: Third },
+            { path: 'Fourth', name: 'Fourth', component: Fourth }
 
         ]
     }]

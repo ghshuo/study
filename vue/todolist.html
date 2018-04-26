@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Todu List</title>
+    <style>
+        .finished {
+            color: red;
+        }
+    </style>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h1 v-html="title"></h1>
+        <input type="text" v-model="inputValue">
+        <button v-on:click="addNew">提交</button>
+        <button v-on:click="clearList">清空所有</button>
+        <ul>
+            <todu-item v-for="(item,index) in list" :key="index" :content="item.label" :index="index" @delete="handleDelete">
+                <!-- <span v-bind:class="{finished:item.isFinished}" v-on:click="toggleFinish(item)">{{index}}.{{item.label}}</span>
+                <span v-on:click="list.splice(index, 1)">删除</span> -->
+            </todu-item>
+
+        </ul>
+    </div>
+    <script>
+        // 全局组件  每一个组件都是一个vue实例
+        Vue.component('todu-item', {
+            props: ['content', 'index'], // 接收属性
+            template: '<li @click="hendeclick">{{content}}</li>',
+            methods: {
+                hendeclick: function() {
+                    this.$emit('delete', this.index)
+                }
+            }
+        })
+
+        new Vue({
+            // 挂载
+            el: '#app',
+            data: {
+                title: 'Todu List',
+                inputValue: '',
+                list: []
+            },
+            // 方法
+            methods: {
+                // toggleFinish: function(item) {
+                //     console.log(1)
+                //     item.isFinished = !item.isFinished
+                // },
+                addNew: function() {
+                    if (this.inputValue == "") { // 如果为"" 不能执行下面
+                        return;
+                    }
+                    this.list.push({
+                        label: this.inputValue,
+                        "isFinished": false
+                    })
+                    this.inputValue = ''
+
+                },
+                handleDelete: function(index) {
+                    console.log(index)
+                    this.list.splice(index, 1)
+                },
+                clearList: function() {
+                    this.list = []
+                }
+            }
+        })
+    </script>
+
+
+</body>
+
+</html

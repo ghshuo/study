@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>v-show/ v-if</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button v-on:click="chage">隐藏</button>
+        <div style="width: 100px;height: 100px;background:red;" v-show="flag"></div>
+        v-show="flag" 给标签添加display：none
+        <br> v-if="flag" 删除dom节点
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                flag: true
+            },
+            methods: {
+                chage: function() {
+                    this.flag = !this.flag
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
+
+</html>

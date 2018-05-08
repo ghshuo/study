@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>属性绑定和属性的简写</title>
+    <style>
+        .aa {
+            color: red;
+        }
+        
+        .bb {
+            background: #ccc;
+        }
+    </style>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        v-bind 用于属性绑定 v-bind:属性=""
+        <br> 简写 ：属性=""
+        <br>
+        <img v-bind:src="url" alt="">
+        <br>
+        <br>
+        <br>
+        <h2>绑定class</h2>
+        <p :class="{aa:true,bb:hasError}">绑定class</p>
+
+        <p :class="[activeClass,errorClass]">绑定class 数组语法</p>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                url: 'https://cn.vuejs.org/images/logo.png',
+                hasError: true,
+                activeClass: 'aa',
+                errorClass: 'bb'
+            }
+
+        })
+    </script>
+
+</body>
+
+</html>

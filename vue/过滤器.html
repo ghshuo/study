@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>过滤器</title>
+    <style>
+
+    </style>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h2>{{3 | my-filter}}</h2>
+        <h2>{{12.654651244 | number(3)}}</h2>
+    </div>
+    <script>
+        // 自定义全局过滤器
+        Vue.filter('my-filter', function(data) {
+            // 返回处理后的值
+            console.log(data);
+            return data < 10 ? '0' + data : data
+
+        })
+
+        Vue.filter('number', (data, n) => {
+            // 返回处理后的值
+            var numbers = '';
+            // 保留几位小数后面添加几个0
+            for (var i = 0; i < n; i++) {
+                numbers += '0';
+            }
+            var s = 1 + numbers;
+            // 如果是整数需要添加后面的0
+            var spot = "." + numbers;
+            // Math.round四舍五入  
+            //  parseFloat() 函数可解析一个字符串，并返回一个浮点数。
+            var value = Math.round(parseFloat(data) * s) / s;
+            // 从小数点后面进行分割
+            var xsd = value.toString().split(".");
+            if (xsd.length == 1) {
+                value = value.toString() + spot;
+                return value;
+            }
+            if (xsd.length > 1) {
+                if (xsd[1].length < 2) {
+                    value = value.toString() + "0";
+                }
+                return value;
+            }
+
+
+        })
+
+        new Vue({
+            el: '#app',
+            data: {
+
+            }
+
+        })
+    </script>
+
+</body>
+
+</html>
+
+</html>

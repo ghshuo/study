@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button v-on:click="show">点我</button> 简写事件
+        <button @click="show">点我</button>
+        <br>
+        <button @click="pint($event)">click me</button>
+        <br> 事件冒泡
+        <div @click="write">
+            <p @click="pintp">
+                <button @click.stop="showBtn()">阻止事件冒泡</button>
+            </p>
+        </div>
+        <br> 默认行为
+        <a href="#" @click.prevent="study">阻止默认行为</a>
+        <br>
+        <br>
+        <br>
+        <h2>键盘事件、@keydown.enter</h2>
+        <br> 用户名：
+        <input type="text" @keydown.enter="keydow">
+
+    </div>
+    <script type="text/javascript">
+        Vue.config.keyCodes = { // 自定义键位别名
+            v: 86,
+            f1: 112,
+        }
+        var app = new Vue({
+            el: '#app',
+            data: {
+
+            },
+            methods: {
+                show() {
+                    alert(11);
+                },
+                pint(e) {
+                    console.log(e.target.innerHTML);
+                    alert(this);
+                },
+                showBtn() {
+                    alert(1);
+                },
+                pintp() {
+                    alert(222);
+                },
+                write() {
+                    alert(333);
+                },
+                study() {
+                    alert(444);
+                },
+                keydow() {
+                    alert('你按了回车');
+                }
+
+            }
+        })
+    </script>
+</body>
+
+</html>

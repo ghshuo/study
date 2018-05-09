@@ -15,7 +15,9 @@
 <body>
     <div id="app">
         <h2>{{3 | my-filter}}</h2>
-        <h2>{{12.654651244 | number(3)}}</h2>
+        <h2>{{12.045| number(2)}}</h2>
+        <h3>{{conterTime | date }}</h3>
+        <h2>{{18.22245 | num(2)}}</h2>
     </div>
     <script>
         // 自定义全局过滤器
@@ -55,10 +57,21 @@
 
         })
 
+        Vue.filter('date', data => {
+            let d = new Date(data);
+            console.log(d);
+            return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDay() + '  ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()
+
+        })
         new Vue({
             el: '#app',
             data: {
-
+                conterTime: Date.now()
+            },
+            filters: { // 定义局部过滤器
+                num: (data, n) => {
+                    return data.toFixed(n)
+                }
             }
 
         })

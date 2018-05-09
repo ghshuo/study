@@ -1,6 +1,6 @@
 <?php
 	//获取参数
-	$name=$_POST['name'];
+    $name=$_POST['name'];
 	$age=$_POST['age'];
 
 	//响应数据

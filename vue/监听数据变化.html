@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>监听数据变化</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="name"> {{name}}
+        <input type="text" v-model="age"> {{age}}
+    </div>
+
+    <script>
+        var vm = new Vue({
+                el: '#app',
+                data: {
+                    name: 'xiaoming',
+                    age: 23
+                },
+                // 方法二
+                watch: {
+                    age: (newVal, oldVal) => {
+                        console.log('age被修改了，原来值：' + oldVal + '新值：' + newVal);
+                    }
+                }
+            })
+            // 方法一： 使用vue实例提供的vm.$watch( expOrFn, callback, [options] )方法
+        vm.$watch('name', function(newVal, oldVal) {
+            console.log('name被修改了，原来值：' + oldVal + '新值：' + newVal);
+        })
+    </script>
+</body>
+
+</html>
+
+</html>

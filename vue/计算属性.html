@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>计算属性</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        姓<input type="text" v-model="fistName"> 名
+        <input type="text" v-model="lastName">
+        <div>{{fullName}}</div>
+        <div>{{count}}</div>
+
+        <hr>
+        <br>
+        <br>
+        <br>
+        <h1>msg：{{msg}}</h1>
+        <h1>msg1：{{msg1}}</h1>
+        <h1>反转：{{reverseMsg}}</h1>
+        <button @click="chage">改变msg的值 </button>
+        <hr>
+        <br>
+        <br>
+        <br>
+
+
+        <h2>{{num2}}</h2>
+        <button @click="change2">修改计算属性</button>
+
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                fistName: '',
+                lastName: '',
+                count: 0,
+                msg: 'Hello Word!',
+                num1: 8
+            },
+            computed: { // 计算属性
+                fullName: function() { // 该函数必须有返回值，用来获取属性，称为get函数
+                    return this.fistName + ' ' + this.lastName
+                },
+                msg1: function() {
+                    return '欢迎来到北京'
+                },
+                reverseMsg: function() {
+                    return this.msg.split('').reverse().join(' ');
+                },
+                num2: {
+                    get: function() {
+                        console.log('num2：' + new Date());
+                        return this.num1 - 1;
+                    },
+                    set: function(val) {
+                        console.log('修改num2值');
+                        // this.num2=val;
+                        this.num1 = 111;
+                    }
+                }
+            },
+            watch: {
+                fistName: function() {
+                    this.count++
+                },
+                lastName: function() {
+                    this.count++
+                }
+            },
+            methods: {
+                chage: function() {
+                    this.msg = 'I Love You'
+                },
+                change2() {
+                    this.num2 = 111;
+                }
+            }
+
+        })
+    </script>
+
+
+</body>
+
+</html>

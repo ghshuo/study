@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>动态组件</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app1">
+        <button @click="flag='my-hello'">显示hello组件</button>
+        <button @click="flag='my-word'">显示word组件</button>
+        <div>
+            <!-- keep-alive组件缓存非活动组件 -->
+            <keep-alive>
+                <component :is="flag"></component>
+            </keep-alive>
+        </div>
+        <hr>
+    </div>
+
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: '#app1',
+            data: {
+                flag: 'my-hello'
+            },
+            /**
+             *定义局部组件，只能在当前实例中使用
+             */
+            components: {
+                'my-hello': {
+                    template: '<h3>我是hello组件{{x}}</h3>',
+                    data: function() { // 在组件中存储数据时，必须以函数形式，函数返回一个对象
+                        return {
+                            x: Math.random()
+                        }
+                    }
+                },
+                'my-word': {
+                    template: '<h3>我是word组件{{y}}</h3>',
+                    data() {
+                        return {
+                            y: Math.random()
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>

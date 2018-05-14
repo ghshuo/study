@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>过渡动画</title>
+    <link rel="stylesheet" href="css/animate.min.css">
+    <style>
+        p {
+            width: 300px;
+            height: 300px;
+            background-color: red;
+        }
+        
+        .fade-enter-active,
+        .fade-leave-active {
+            transition: all 2s ease;
+            opacity: 1;
+            width: 300px;
+            height: 300px;
+        }
+        
+        .fade-leave-active {
+            opacity: 0;
+            width: 100px;
+            height: 100px;
+        }
+        
+        .fade-enter {
+            width: 100px;
+            height: 100px;
+            opacity: 0;
+        }
+    </style>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="flag = !flag">
+        Toggle
+    </button>
+        <transition name="fade" v-on:before-enter="beforeEnter" v-on:enter="enter" v-on:after-enter="afterEnter" v-on:before-leave="beforeLeave" v-on:leave="leave" v-on:after-leave="afterLeave">
+            <p v-show="flag">hello</p>
+        </transition>
+    </div>
+
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                flag: false
+            },
+            methods: {
+                beforeEnter: function(el) {
+                    alert('动画进入执行执行============beforeEnter');
+                },
+                // 此回调函数是可选项的设置
+                // 与 CSS 结合时使用
+                enter: function() {
+                    alert('动画进入============enter');
+                },
+                afterEnter: function(el) {
+                    alert('动画进入之后============afterEnter');
+                    el.style.background = 'blue';
+                },
+
+                // --------
+                // 离开时
+                // --------
+
+                beforeLeave: function(el) {
+                    alert('动画即将离开============beforeEnter');
+                },
+                // 此回调函数是可选项的设置
+                // 与 CSS 结合时使用
+                leave: function(el, done) {
+                    alert('动画离开============beforeEnter');
+                },
+                afterLeave: function(el) {
+                    alert('动画离开之后============beforeEnter');
+                    el.style.background = 'red';
+                }
+            }
+
+        })
+    </script>
+</body>
+
+</html>

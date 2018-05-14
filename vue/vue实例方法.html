@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue实例方法</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        {{msg}}
+        <h1 ref="hello">hello</h1>
+        <br>
+        <h1 ref="title">标题：{{name}}</h1>
+        <hr>
+        <br>
+        <br>
+        <button @click="doAdd">添加</button>
+        <button @click="doDelete">删除</button>
+        <h2>{{user.name}}</h2>
+        <h2>{{user.age}}</h2>
+    </div>
+    <script>
+        // vm.$mount() 手动地挂载一个未挂载的实例。
+        let vm = new Vue({
+            data: {
+                msg: 'Hello Word!',
+                name: '小明',
+                user: {
+                    id: 1001,
+                    name: '小王'
+                }
+            },
+            methods: {
+                // vm.$set( target, key, value )
+                doAdd() {
+                    if (this.user.age) {
+                        this.user.age++;
+                    } else {
+                        vm.$set(this.user, 'age', 22)
+                    }
+
+                },
+                // vm.$delete(target, key)
+                doDelete() {
+                    if (this.user.age) {
+                        vm.$delete(this.user, 'age')
+                    }
+                }
+
+            }
+        }).$mount('#app');
+
+        // vm.$destroy()销毁实例
+        // vm.$destroy();
+
+        // vm.$nextTick([callback])   在DOM更新完成之后再执行回调函数，一般在修改数据之后使用该方法，一边获取更新的dmo元素
+        vm.name = '小飞';
+        // dome还没有更新完成，vue实现响应并不是数据发生改变之后dom立即改变，需要一定的策略进行dom更新，需要一些时间
+        console.log(vm.$refs.title.textContent); // 小明   
+        vm.$nextTick(function() {
+            // 更新完成之后执行
+            console.log(vm.$refs.title.textContent);
+        })
+    </script>
+
+</body>

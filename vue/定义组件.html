@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>定义组件</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <hello></hello>
+        <my-word></my-word>
+    </div>
+
+    <script type="text/javascript">
+        /**
+         *组件定义第一种
+         */
+        // 创建一个组件构造器
+        var myComponent = Vue.extend({
+                template: '<h3>hello word</h3>'
+            })
+            // 使用Vue.component(标签名，组件构造器)，根据组件构造器来创建组件
+        Vue.component('hello', myComponent);
+        /**
+         *组件定义第二种
+         */
+        Vue.component('my-word', {
+            template: '<h3>您好，世界！</h3>'
+        })
+        var vm = new Vue({
+            el: '#app',
+        })
+    </script>
+    <div id="app1">
+        <my-hello></my-hello>
+        <my-wod></my-wod>
+    </div>
+
+    <script type="text/javascript">
+        /**
+         *全局组件，可以在所有vue实例中使用
+         */
+        Vue.component('my-hello', {
+            template: '<h3>我是定义全局组件</h3>',
+            data: function() { // 在组件中存储数据时，必须以函数形式，函数返回一个对象
+                return {
+                    name: '小明'
+                }
+            }
+        })
+        var vm = new Vue({
+            el: '#app1',
+            data: {
+                name: 'hsgeng'
+            },
+            /**
+             *定义局部组件，只能在当前实例中使用
+             */
+            components: {
+                'my-wod': {
+                    template: '<h3>我是一个局部组件</h3>',
+                    data: function() { // 在组件中存储数据时，必须以函数形式，函数返回一个对象
+                        return {
+                            name: 'xiaoxin'
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>

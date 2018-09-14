@@ -1,15 +1,5 @@
-html{font-family:"微软雅黑",Arial,sans-serif}
+html{font-family:"微软雅黑",Arial,sans-serif;}
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,input,button,textarea,p,th,td,span{padding:0;margin:0;font-family:Microsoft YaHei,sans-serif,Arial}
-table{border-collapse:collapse;border-spacing:0}
-fieldset,img{border:0}
-a{text-decoration:none;color:#000;outline:none}
-li{list-style:none}
-caption,th{text-align:left}
-h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}
-input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit}
-input,button,textarea,select{*font-size:100%}
-a{-webkit-transition:all 0.5s linear;-moz-transition:all 0.5s linear;-ms-transition:all 0.5s linear;-o-transition:all 0.5s linear}
-
 .borderBoy{
     width: 1000px;
     margin: 0 auto;
@@ -94,16 +84,22 @@ a{-webkit-transition:all 0.5s linear;-moz-transition:all 0.5s linear;-ms-transit
     width: 350px;
 }
 .conterleftcont1{
-    margin-top: 29px;
-    float: left;
+    position: absolute;
+    left: 40px;
+    top: 331px;
+    width: 350px;
 }
 .conterleftcont2{
-    float: left;
-    margin-top: 67px;
+    position: absolute;
+    left: 40px;
+    top: 514px;
+    width: 350px;
 }
 .conterRightCont1{
-    margin-top: 84px;
-    float: left;
+    position: absolute;
+    left: 606px;
+    top: 374px;
+    width: 350px;
 }
 .title{
     float: right;

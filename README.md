@@ -1,6 +1,8 @@
 # study     vue   es6
 学习笔记
 
+# 戏剧性教育
+ 自适应 https://ghshuo.github.io/study/index/index.html
 # vue官网地址：https://cn.vuejs.org/
 vue学习笔记地址： https://ghshuo.github.io/study/vue/index.html
  生命周期
@@ -23,6 +25,10 @@ Iterator
 Promise
 箭头函数 = >
 class类
+
+# demo
+ https://ghshuo.github.io/study/demo
+button
 
 # 学习资料
 ### 一. 资源教程:
